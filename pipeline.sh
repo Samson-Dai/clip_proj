@@ -410,7 +410,7 @@ findMotifs.pl initial_peaks_seq.fa fasta homer_output/
 #Annotate peaks
 ###############
 #download genome .gtf file
-#ADD WGET HERE#
+wget -O hg38_UCSC.gtf.gz https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz
 gunzip hg38_UCSC.gtf.gz
 
 #annotate peaks
