@@ -1,23 +1,6 @@
 #!/bin/sh
 
 #############
-#load package
-#############
-module load cutadapt/2.10
-module load STAR/2.7.6a
-module load samtools/1.13.0
-module load anaconda3/2020.11
-module load bedtools/2.29.2
-module load MEME-suite/5.4.1
-module load FastQC
-
-###############
-#setup anaconda
-###############
-mv $HOME/.conda $PROJECT/.conda
-ln -s $PROJECT/.conda $HOME/.conda
-
-#############
 #Trim adapter
 #############
 ##Rep1
@@ -58,8 +41,8 @@ cutadapt \
 rep1.IP.umi.r1.fq \
 rep1.IP.umi.r2.fq
 
-fastqc -t 2 --extract -k 7 rep1.IP.umi.r1.fqTr.fq -o quality
-fastqc -t 2 --extract -k 7 rep1.IP.umi.r2.fqTr.fq -o quality
+#fastqc -t 2 --extract -k 7 rep1.IP.umi.r1.fqTr.fq -o quality
+#fastqc -t 2 --extract -k 7 rep1.IP.umi.r2.fqTr.fq -o quality
 
 #Round 2
 cutadapt \
@@ -95,8 +78,8 @@ cutadapt \
 rep1.IP.umi.r1.fqTr.fq \
 rep1.IP.umi.r2.fqTr.fq
 
-fastqc -t 2 --extract -k 7 rep1.IP.umi.r1.fqTrTr.fq -o quality
-fastqc -t 2 --extract -k 7 rep1.IP.umi.r2.fqTrTr.fq -o quality
+#fastqc -t 2 --extract -k 7 rep1.IP.umi.r1.fqTrTr.fq -o quality
+#fastqc -t 2 --extract -k 7 rep1.IP.umi.r2.fqTrTr.fq -o quality
 
 ##Rep2
 #Round 1
@@ -240,8 +223,6 @@ mv rep2.IP.umi.r1.fqTrTr.sorted.STARUnmapped.out.mate2 rep2.IP.umi.r2.fq.repeat-
 ##############################
 #Map non-repeats to the genome
 ##############################
-## Download genome reference: https://www.encodeproject.org/files/ENCFF159KBI/
-## Download male genome reference: https://www.encodeproject.org/files/GRCh38_no_alt_analysis_set_GCA_000001405.15/
 #Generate index 
 STAR \
 --runThreadN 8 \
@@ -281,7 +262,6 @@ mv rep1.IP.umi.r1.fq.genome-mappedAligned.out.bam rep1.IP.umi.r1.fq.genome-mappe
 
 ##Rep2
 #Alignment
-#!/bin/sh
 STAR \
 --runMode alignReads \
 --runThreadN 8 \
@@ -329,12 +309,6 @@ rep2.IP.umi.r1.fq.genome-mapped.bam
 ######################
 #Remove PCR duplicates
 ######################
-#use python/2.7
-#install packages
-conda create --name py2 python=2.7
-conda activate py2
-pip install --user pysam==0.15.4
-
 ##Rep1
 python barcodecollapsepe.py \
 -o rep1.IP.umi.r1.fq.genome-mappedSo.rmDup.bam \
@@ -359,65 +333,3 @@ samtools sort -o rep2.IP.umi.r1.fq.genome-mappedSo.rmDupSo.bam rep2.IP.umi.r1.fq
 #Merge replicates
 #################
 samtools merge pe_clip.fq.genomemappedSo.rmDupSo.merged.bam rep1.IP.umi.r1.fq.genome-mappedSo.rmDupSo.bam rep2.IP.umi.r1.fq.genome-mappedSo.rmDupSo.bam
-
-############
-#Call peaks
-############
-#dowload test control data
-get https://www.encodeproject.org/files/ENCFF948OYU/@@download/ENCFF948OYU.bam
-mv ENCFF948OYU.bam ctrl.bam
-
-#install peakachu
-conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
-conda create -n peakachu peakachu python=3
-conda activate peakachu
-
-#run peakachu
-peakachu adaptive -M 200 -m 0.0 -f 2.0 -Q 0.05 -c ctrl.bam -t pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
-
-#convert peakachu peaks to homer peak file
-awk -F'\t' -v OFS='\t' 'NR ==1 {print "ID", $0; next} {print (NR-1), $0} ' peaks.txt > peaks_homer_1.txt
-cut -f6,7,8,9 --complement peaks_homer_1.txt > homer_peaks.txt
-
-#############
-#Find motifs 
-#############
-#download hg38 genome and load module
-module load homer
-module load bedtools 
-wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
-gunzip hg38.fa.gz
-
-#converst peak file to bed file
-awk 'NR>1{
-    if ($2 < $3) {
-        print $1, $2, $3, "clip_peak_"NR-1,$8,$4;
-        }
-    else {
-        print $1, $3, $2, "clip_peak_"NR-1,$8,$4;
-        }
-    }' initial_peaks.csv | tr ' ' '\t' > initial_peaks.bed
-
-#extract genomic DNA of peaks
-bedtools getfasta -fi hg38.fa -bed initial_peaks.bed > initial_peaks_seq.fa
-
-#find motifs 
-findMotifs.pl initial_peaks_seq.fa fasta homer_output/ 
-
-###############
-#Annotate peaks
-###############
-#download genome .gtf file
-wget -O hg38_UCSC.gtf.gz https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.knownGene.gtf.gz
-gunzip hg38_UCSC.gtf.gz
-
-#annotate peaks
-annotatePeaks.pl homer_peaks.txt hg38.fa -gtf hg38_UCSC.gtf > homer_peaks_annot.txt
-
-#########################
-#Gene enrichment analysis
-#########################
-#add RCAS rscript
-

@@ -1,12 +1,24 @@
-#link the ocean dir
-ln -s /ocean/projects/mcb180074p/sdai clip_proj
+#!/bin/sh
 
-#get data eclip TARDBP K562
-cd clip_proj
-xargs -L 1 curl -O -J -L < files.txt
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#This script will load all the modules needed for the pipeline.
+#Run before running the actual pipeline.
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-#rename the sequencing files
-mv ENCFF734UEC.fastq.gz rep1.IP.umi.r1.fq.gz
-mv ENCFF147JYD.fastq.gz rep1.IP.umi.r2.fq.gz
-mv ENCFF661TYX.fastq.gz rep2.IP.umi.r1.fq.gz
-mv ENCFF218BOC.fastq.gz rep2.IP.umi.r2.fq.gz
+#############
+#Load package
+#############
+module load cutadapt/2.10
+module load STAR/2.7.6a
+module load samtools/1.13.0
+module load anaconda3/2020.11
+module load bedtools/2.29.2
+module load MEME-suite/5.4.1
+module load FastQC
+module load homer
+module load bedtools 
+
+######################
+#Activate anaconda env
+######################
+conda activate py2
