@@ -1,0 +1,69 @@
+#!/bin/sh
+
+INPUT=""
+TEMP=""
+OUTPUT=""
+
+_usage="
+Usage: $0 [OPTIONS]
+Options:
+  [ -i INPUT_DIR ],          Required. Input files directory.
+  [ -o OUTPUT_DIR ],         Optimal. Output files directory. Defualt as INPUT_DIR.
+  [ -t TEMP_DIR ],           Optimal. Temporary files directory. Defualt as TEMP_DIR.
+  [ -h ],                    Help manuals.
+"
+
+usage() {                                 # Function: Print a help message.
+  echo "$_usage" 1>&2 
+}
+
+exit_abnormal() {                         # Function: Exit with error.
+  usage
+  exit 1
+}
+
+while getopts ":i:o:t:h" options; do         # use silent error checking;
+                                          
+  case "${options}" in                    
+    i)                                    # If the option is i,
+      INPUT=${OPTARG}                     # set $INPUT to specified value.
+      ;;
+    o)                                    # If the option is o,
+      OUTPUT=${OPTARG}                    # set $OUTPUT to specified value.
+      ;;
+    t)                                    # If the option is t,
+      TEMP=${OPTARG}                      # set $TEMP to specified value.
+      ;;
+    h)                                    # If the option is h,
+      usage                      		  # print help manuals.
+      ;;
+    :)                                    # If expected argument omitted:
+      echo "Error: -${OPTARG} requires an argument."
+      exit_abnormal                       # Exit abnormally.
+      ;;
+    *)									  # If unknown (any other) option:
+      echo "Error: Unknow option provided."                                    
+      exit_abnormal                       # Exit abnormally.
+      ;;
+  esac
+done
+
+
+if [ "$INPUT" = "" ]; then                 # If $INPUT is an empty string,
+  echo "Error: must provide INPUT_DIR."
+  exit_abnormal                       
+fi
+
+if [ "$TEMP" = "" ]; then                  # If $TEMP is an empty string,
+  TEMP=$INPUT                        
+fi
+
+if [ "$OUTPUT" = "" ]; then                # If $OUTPUT is an empty string,
+  OUTPUT=$INPUT                       
+fi
+
+cd $INPUT
+ls
+# add pipine line here
+
+exit 0                                     # Exit normally.

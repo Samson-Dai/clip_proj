@@ -1,4 +1,8 @@
 #!/bin/sh
+#SBATCH -N 2
+#SBATCH -p RM-shared
+#SBATCH -t 5:00:00
+#SBATCH --ntasks-per-node=128
 
 #############
 #Trim adapter

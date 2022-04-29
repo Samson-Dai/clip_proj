@@ -28,15 +28,21 @@ pip install --user pysam==0.15.4
 #######################################
 #Download data
 #######################################
-#download eclip TARDBP K562 from ENCODE
+#Download eclip TARDBP K562 from ENCODE
 cd clip_proj
 xargs -L 1 curl -O -J -L < files.txt
 
-#rename the sequencing files
+#Rename the sequencing files
 mv ENCFF734UEC.fastq.gz rep1.IP.umi.r1.fq.gz
 mv ENCFF147JYD.fastq.gz rep1.IP.umi.r2.fq.gz
 mv ENCFF661TYX.fastq.gz rep2.IP.umi.r1.fq.gz
 mv ENCFF218BOC.fastq.gz rep2.IP.umi.r2.fq.gz
+
+#Unzip the input files
+gunzip rep1.IP.umi.r1.fq.gz
+gunzip rep1.IP.umi.r2.fq.gz
+gunzip rep2.IP.umi.r1.fq.gz
+gunzip rep2.IP.umi.r2.fq.gz
 
 #Download genome reference: https://www.encodeproject.org/files/ENCFF159KBI/
 #Download male genome reference: https://www.encodeproject.org/files/GRCh38_no_alt_analysis_set_GCA_000001405.15/
