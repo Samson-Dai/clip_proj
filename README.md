@@ -19,7 +19,7 @@ The pipeline takes the fastq files from [ENCODE](https://www.encodeproject.org/e
 A detailed user manual for this API can be found [here](https://docs.google.com/document/d/1oN8uVp0X6dJDNgbZuuwEoN9pRx6a43hob3GOVItfcQU/edit?usp=sharing).
 --->
 
-<div align="center"><img src="https://github.com/Samson-Dai/clip_project/workflow.png" width="600" height="400"></div>
+<div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/workflow.png" width="600" height="400"></div>
 <div align="center"><b>Pipeline workflow</b></div>
 
 ## Usage
