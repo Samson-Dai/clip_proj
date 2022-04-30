@@ -58,8 +58,9 @@ gunzip hg38_UCSC.gtf.gz
 #annotate peaks
 annotatePeaks.pl homer_peaks.txt hg38.fa -gtf hg38_UCSC.gtf > homer_peaks_annot.txt
 
-#########################
-#Gene enrichment analysis
-#########################
+#####################
+#Functional Analysis
+####################
 #add RCAS rscript
+Rscript RCAS.R
 
