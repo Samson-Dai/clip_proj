@@ -61,6 +61,7 @@ annotatePeaks.pl homer_peaks.txt hg38.fa -gtf hg38_UCSC.gtf > homer_peaks_annot.
 #####################
 #Functional Analysis
 ####################
-#add RCAS rscript
+#install and run RCAS
+conda install bioconductor-rcas -c bioconda
 Rscript RCAS.R
 
