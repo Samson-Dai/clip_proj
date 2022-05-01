@@ -8,8 +8,8 @@ _usage="
 Usage: $0 [OPTIONS]
 Options:
   [ -i INPUT_DIR ],          Required. Input files directory.
-  [ -o OUTPUT_DIR ],         Optimal. Output files directory. Defualt as INPUT_DIR.
-  [ -t TEMP_DIR ],           Optimal. Temporary files directory. Defualt as TEMP_DIR.
+  [ -o OUTPUT_DIR ],         Optional. Output files directory. Defualt as INPUT_DIR.
+  [ -t TEMP_DIR ],           Optional. Temporary files directory. Defualt as INPUT_DIR.
   [ -h ],                    Help manuals.
 "
 
