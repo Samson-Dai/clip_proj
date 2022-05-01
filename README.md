@@ -1,23 +1,18 @@
 # Functional analysis of RNA binding sites using eCLIP PE data
 
-<!---
-[eCLIP](https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/eclip.html) is a sequencing technique developed by Illumina, which sequences mRNA strands that are bound by RNA-binding proteins. It involves in-vivo cross-linking of RNA and protein. The protein is then immunoprecipitated and the attached mRNA is sequenced. This sequencing data is available as fastq files on [ENCODE](https://www.encodeproject.org/eclip/). This project aims to create a pipeline for extracting the mRNA sequences from these fastq files. The project comes with an API that aims to enable end-users to extract sequences from their own eCLIP experiments and compare it against the database of eCLIP experiments on ENCODE. 
---->
+[CLIP-seq](https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/hits-clip-clip-seq-ptb-seq.html) is a crosslinking and immunoprecipitation (CLIP) sequencing technique that is used to identify RNA binding sites of RNA binding proteins (RBPs). CLIP-seq is frequently used to understand the protein-RNA interactions as well as its functional downstream effects. [eCLIP](https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/eclip.html) data is a recent and improved version of CLIP-seq that can identify binding sites of RBPs in vivo. Compared to earlier CLIP-seq methods such as iCLIP, eCLIP tends to have higher efficiency and quality of library production as iCLIP methods often result in high duplication rates and low library complexity [(Nostrand, 2016)](https://www.nature.com/articles/nmeth.3810) .
+
+This pipeline aims to use paired-end eCLIP data replicates to identify peak sequence regions where RBPs are bound and perform functional analysis on the RNA regions shown to interact with the RBP of interest. Steps taken to process raw peCLIP sequence data were adopted from the existing eCLIP pipeline of the Yeo lab [(Blue, 2022)](https://pubmed.ncbi.nlm.nih.gov/35322209/). The raw eCLIP reads (available as fastq files on [ENCODE](https://www.encodeproject.org/eclip/)) were processed and aligned against the reference genome to create .bam files. The .bam files were then used to call peaks and perform functional analysis on the peak regions. This pipeline is designed to perform in an HPC environment (PSC bridges-2).
 
 ## Technology Stack
-
 * **Language**: Shell script
 * **Computing Platform**: HPC (PSC Bridge2) using SLURM workload manager
 
 ## Pipeline
 
-<!---
-The pipeline takes the fastq files from [ENCODE](https://www.encodeproject.org/eclip/) and the human hg38 reference genome from the [Ensembl genome browser](https://useast.ensembl.org/index.html). It uses [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to check the quality of the fastq files. Then it uses [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) to remove adapters from the reads. It then aligns the trimmed reads against the reference genome using [STAR](https://github.com/alexdobin/STAR) aligner. The bam files from the aligner are indexed using [Samtools](http://www.htslib.org/) before being fed to [PureCLIP](https://github.com/skrakau/PureCLIP) for peak-calling. [Bedtools](https://bedtools.readthedocs.io/en/latest/) is used to extract raw sequences from this output. The output is stored in a BLAST database, which allows us to [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) a sequence against this database of sequences.
---->
+The pipeline takes the fastq files from [ENCODE](https://www.encodeproject.org/eclip/) , the human hg38 reference genome and .gtf from the [Ensembl genome browser](https://useast.ensembl.org/index.html).  It uses [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) to remove adapters from the reads. Then it maps the reads to a human specific version of
+[RepBase](https://www.girinst.org/repbase/) used to remove repetitive elements, helps control for spurious artifacts from rRNA (&other) repetitive reads. The unique reads are aligned against the reference genome using [STAR](https://github.com/alexdobin/STAR) aligner. It then removes PCR duplicates by barcodecollapsepe.py. The .bam files are merged using [STAR](https://github.com/alexdobin/STAR) before being fed to [PEAKachu](https://github.com/tariks/peakachu) for peak-calling. [Homer](http://homer.ucsd.edu/homer/ngs/peaks.html) will then take the list of peaks (initial_peaks.csv) to annotate the peaks with its Entrez gene ID as well as identify binding motifs. At last, [RCAS](https://academic.oup.com/nar/article/45/10/e91/3038237) takes the annotated list of peaks to perform functional analysis of the transcript and generates a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest.
 
-<!---
-A detailed user manual for this API can be found [here](https://docs.google.com/document/d/1oN8uVp0X6dJDNgbZuuwEoN9pRx6a43hob3GOVItfcQU/edit?usp=sharing).
---->
 
 <div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/workflow.png" width="600" height="400"></div>
 <div align="center"><b>Pipeline workflow</b></div>
@@ -26,34 +21,34 @@ A detailed user manual for this API can be found [here](https://docs.google.com/
 Before running the pipeline, required input files should be prepared, renamed following the naming conventions and placed in the INPUT directory. Required input files and naming conventions are listed as follows, missing input files or failure to follow the naming conventions will lead to execution fault for the pipeline:
 
 - **eCLIP sequencing data** naming as: 
-```js
+```
 	req1.r1.fq
 	req1.r2.fq
 	req2.r1.fq
 	req2.r2.fq
 ```
-The Pair-end eCLIP sequencing data can be downloaded from the [ENCORE](https://www.encodeproject.org/encore-matrix/?type=Experiment&status=released&internal_tags=ENCORE) database. The data should contain 2 replicates and each replicate should contain 2 reads. Hence, in total, there should be 4 different eCLIP sequencing files.
+The paired-end eCLIP sequencing data can be downloaded from the [ENCORE](https://www.encodeproject.org/encore-matrix/?type=Experiment&status=released&internal_tags=ENCORE) database. The data should contain 2 replicates and each replicate should contain 2 reads. Hence, in total, there should be 4 different eCLIP sequencing files.
 
 - **RepBase repetitive RNA sequences** naming as: 
-```js
+```
 	homo_sapiens_repbase.fasta
 ```
 The RepBase file contains the sets of common repeat elements for several species and it's used to remove the repetitive elements. The sample  homo sapiens RepBase file can be downloaded from the Canvas page.
 
 - **Reference genome .fasta file** naming as: 
-```js
+```
 	ref_genome.fasta
 ```
 The reference genome is used as a reference for the non-repeat reads to map to. We use [GRCh38](https://www.encodeproject.org/files/GRCh38_no_alt_analysis_set_GCA_000001405.15/) reference genome as a sample genome. 
 
 - **Reference genome .gtf information file** naming as: 
-```js
+```
 	genome_info.gtf
 ```
 The reference genome .gtf file contains information about gene structures and helps to map non-repeat reads to the reference genome. We use [GRCh38 gtf](https://www.encodeproject.org/files/ENCFF159KBI/) reference genome .gtf as a sample .gtf. 
 
 After downloading and renaming all the required input files, a input directory should be created to hold all the input files. Create a sample input directory via the following command:
-```js
+```
 	mkdir sample_input_dir
 ```
 
@@ -70,17 +65,40 @@ After moving all input files into the sample input directory, the tree structure
 ```
 
 ## Usage
+Before running the pipeline, please make sure all required input files are renamed following the naming conventions and placed in the INPUT directory.  It's recommended to provide a output directory to hold the output file and a temp direcory to hold all the intermediate files. Create a sample output and temp directories via the following command:
+```
+	mkdir sample_output_dir
+	mkdir sample_temp_dir
+```
+The pipeline can be run by directly calling the execution file: 
+```
+./eclippe [Options]
 
+Options:
+  [ -i INPUT_DIR ],          Required. Input files directory.
+  [ -o OUTPUT_DIR ],         Optional. Output files directory. Defualt as INPUT_DIR.
+  [ -t TEMP_DIR ],           Optional. Temporary files directory. Defualt as INPUT_DIR.
+  [ -h ],                    Help manuals.
+```
+Run the sample pipeline via the following command:
+```
+./eclippe -i sample_input_dir
+		  -o sample_output_dir
+		  -t sample_temp_dir
+```
+The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
 
-## Summary
-
-<!---
-We developed a pipeline that could extract mRNA sequences bound by RBP from the reads data available at ENCODE. The API for this pipeline could be used by end-users to extract sequences from their experiments and compare it against the sequences available within ENCODE.
---->
+<div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/sample_output.png" width="600" height="400"></div>
+<div align="center"><b>Pipeline workflow</b></div>
 
 ## Team
-
 * [Songcheng Dai](https://github.com/Samson-Dai/clip_project)
 *  Tianyu Xia
 *  Yejie Yun
 *  Shuhao Zhang
+
+## Reference
+* Van Nostrand, E. L., Pratt, G. A., Shishkin, A. A., Gelboin-Burkhart, C., Fang, M. Y., Sundararaman, B., ... & Yeo, G. W. (2016). Robust transcriptome-wide discovery of RNA-binding protein binding sites with enhanced CLIP (eCLIP). Nature methods, 13(6), 508-514.
+
+  
+* Blue, S. M., Yee, B. A., Pratt, G. A., Mueller, J. R., Park, S. S., Shishkin, A. A., ... & Yeo, G. W. (2022). Transcriptome-wide identification of RNA-binding protein binding sites using seCLIP-seq. Nature Protocols, 1-43.
