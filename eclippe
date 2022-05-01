@@ -7,9 +7,9 @@ OUTPUT=""
 _usage="
 Usage: $0 [OPTIONS]
 Options:
-  [ -i INPUT_DIR ],          Required. Input files directory.
-  [ -o OUTPUT_DIR ],         Optional. Output files directory. Defualt as INPUT_DIR.
-  [ -t TEMP_DIR ],           Optional. Temporary files directory. Defualt as INPUT_DIR.
+  [ -i INPUT_DIR ],          Required. Absolute path to input files directory.
+  [ -o OUTPUT_DIR ],         Optional. Absolute path to output files directory. Defualt as INPUT_DIR.
+  [ -t TEMP_DIR ],           Optional. Absolute path to temporary files directory. Defualt as INPUT_DIR.
   [ -h ],                    Help manuals.
 "
 
@@ -35,7 +35,8 @@ while getopts ":i:o:t:h" options; do         # use silent error checking;
       TEMP=${OPTARG}                      # set $TEMP to specified value.
       ;;
     h)                                    # If the option is h,
-      usage                      		  # print help manuals.
+      usage
+      exit 0                      		    # print help manuals.
       ;;
     :)                                    # If expected argument omitted:
       echo "Error: -${OPTARG} requires an argument."
@@ -61,6 +62,7 @@ fi
 if [ "$OUTPUT" = "" ]; then                # If $OUTPUT is an empty string,
   OUTPUT=$INPUT                       
 fi
+
 
 cd $INPUT
 touch input.txt

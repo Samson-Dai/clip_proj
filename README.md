@@ -22,10 +22,10 @@ Before running the pipeline, required input files should be prepared, renamed fo
 
 - **eCLIP sequencing data** naming as: 
 ```
-	req1.r1.fq
-	req1.r2.fq
-	req2.r1.fq
-	req2.r2.fq
+	rep1.r1.fq
+	rep1.r2.fq
+	rep2.r1.fq
+	rep2.r2.fq
 ```
 The paired-end eCLIP sequencing data can be downloaded from the [ENCORE](https://www.encodeproject.org/encore-matrix/?type=Experiment&status=released&internal_tags=ENCORE) database. The data should contain 2 replicates and each replicate should contain 2 reads. Hence, in total, there should be 4 different eCLIP sequencing files.
 
@@ -72,14 +72,14 @@ Before running the pipeline, please make sure all required input files are renam
 	mkdir sample_output_dir
 	mkdir sample_temp_dir
 ```
-The pipeline can be run by directly calling the execution file: 
+The pipeline can be run by directly calling the execution file, please note that all directory paths are **absolute paths**: 
 ```
 ./eclippe [Options]
 
 Options:
-  [ -i INPUT_DIR ],          Required. Input files directory.
-  [ -o OUTPUT_DIR ],         Optional. Output files directory. Defualt as INPUT_DIR.
-  [ -t TEMP_DIR ],           Optional. Temporary files directory. Defualt as INPUT_DIR.
+  [ -i INPUT_DIR ],          Required. Absolute path to input files directory.
+  [ -o OUTPUT_DIR ],         Optional. Absolute path to output files directory. Defualt as INPUT_DIR.
+  [ -t TEMP_DIR ],           Optional. Absolute path to temporary files directory. Defualt as INPUT_DIR.
   [ -h ],                    Help manuals.
 ```
 Run the sample pipeline via the following command:
