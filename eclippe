@@ -63,7 +63,11 @@ if [ "$OUTPUT" = "" ]; then                # If $OUTPUT is an empty string,
 fi
 
 cd $INPUT
-ls
+touch input.txt
+cd $TEMP
+touch temp.txt
+cd $OUTPUT
+touch output.txt
 # add pipine line here
 
 exit 0                                     # Exit normally.

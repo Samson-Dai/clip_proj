@@ -64,6 +64,8 @@ After moving all input files into the sample input directory, the tree structure
 │   └── genome_info.gtf
 ```
 
+## Environment setup
+
 ## Usage
 Before running the pipeline, please make sure all required input files are renamed following the naming conventions and placed in the INPUT directory.  It's recommended to provide a output directory to hold the output file and a temp direcory to hold all the intermediate files. Create a sample output and temp directories via the following command:
 ```
@@ -89,7 +91,7 @@ Run the sample pipeline via the following command:
 The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
 
 <div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/sample_output.png" width="600" height="400"></div>
-<div align="center"><b>Pipeline workflow</b></div>
+<div align="center"><b>Sample output</b></div>
 
 ## Team
 * [Songcheng Dai](https://github.com/Samson-Dai/clip_project)
