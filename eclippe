@@ -237,4 +237,7 @@ cutadapt \
 "$TRIMMED1_2_1" \
 "$TRIMMED1_2_2"
 
+
+
+
 exit 0                                     # Exit normally.
