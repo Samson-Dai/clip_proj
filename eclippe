@@ -434,7 +434,12 @@ RMDUP_SO_2="${ALIGNED_2_1}SO.rmDupSO.bam"
 #################
 #Merge replicates
 #################
-MERGED="${TEMP}.pe_clip.fq.merged.bam"
+MERGED="${TEMP}/pe_clip.fq.merged.bam"
 samtools merge "$MERGED" "$RMDUP_SO_1" "$RMDUP_SO_2"
+
+
+############
+#Call peaks
+############
 
 exit 0                                     # Exit normally.

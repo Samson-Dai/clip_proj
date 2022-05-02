@@ -10,11 +10,7 @@ module load samtools
 samtools index ctrl.bam
 samtools index pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
 
-#install peakachu
-conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
-conda create -n peakachu peakachu python=3
+#active environ
 conda deactivate py2
 conda activate peakachu
 
