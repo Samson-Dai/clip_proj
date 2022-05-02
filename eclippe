@@ -245,37 +245,40 @@ TRIMMED2_2_2="${TEMP}/rep2.r2.fqTrTr.fq"
 cd $TEMP
 mkdir repeat_index
 REPEAT_INDEX_DIR="${TEMP}/repeat_index"
+echo "$REPEAT_INDEX_DIR"
+cd $REPEAT_INDEX_DIR
+ls
 
-STAR \
---runThreadN 8 \
---runMode genomeGenerate \
---genomeSAindexNbases 9 \
---genomeDir "$REPEAT_INDEX_DIR" \
---genomeFastaFiles "$REF_GENOME"
+# STAR \
+# --runThreadN 8 \
+# --runMode genomeGenerate \
+# --genomeSAindexNbases 9 \
+# --genomeDir "$REPEAT_INDEX_DIR" \
+# --genomeFastaFiles "$REF_GENOME"
 
 #Rep1
 UNIQUE_1_1="${TEMP}/rep1.r1.fqTrTr.sorted.STAR"
 #Run alignment
-STAR \
---runMode alignReads \
---runThreadN 8 \
---genomeDir "$REPEAT_INDEX_DIR" \
---genomeLoad NoSharedMemory \
---alignEndsType EndToEnd \
---outSAMunmapped Within \
---outFilterMultimapNmax 30 \
---outFilterMultimapScoreRange 1 \
---outFileNamePrefix "$UNIQUE_1_1" \
---outSAMtype BAM Unsorted \
---outFilterType BySJout \
---outBAMcompression 10 \
---outReadsUnmapped Fastx \
---outFilterScoreMin 10 \
---outSAMattrRGline ID:foo \
---outSAMattributes All \
---outSAMmode Full \
---outStd Log \
---readFilesIn "$TRIMMED2_1_1" "$TRIMMED2_1_2"
+# STAR \
+# --runMode alignReads \
+# --runThreadN 8 \
+# --genomeDir "$REPEAT_INDEX_DIR" \
+# --genomeLoad NoSharedMemory \
+# --alignEndsType EndToEnd \
+# --outSAMunmapped Within \
+# --outFilterMultimapNmax 30 \
+# --outFilterMultimapScoreRange 1 \
+# --outFileNamePrefix "$UNIQUE_1_1" \
+# --outSAMtype BAM Unsorted \
+# --outFilterType BySJout \
+# --outBAMcompression 10 \
+# --outReadsUnmapped Fastx \
+# --outFilterScoreMin 10 \
+# --outSAMattrRGline ID:foo \
+# --outSAMattributes All \
+# --outSAMmode Full \
+# --outStd Log \
+# --readFilesIn "$TRIMMED2_1_1" "$TRIMMED2_1_2"
 
 
 exit 0                                     # Exit normally.
