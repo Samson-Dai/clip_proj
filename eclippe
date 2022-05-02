@@ -487,10 +487,11 @@ cd $PEAKACHU_DIR
 INIT_BED="${PEAKACHU_DIR}/initial_peaks.bed"
 INIT_PEAK_FA="${PEAKACHU_DIR}/initial_peaks_seq.fa"
 #extract genomic DNA of peaks
-bedtools getfasta \
--fi "$REF_GENOME" \
--bed "$INIT_BED" > "$INIT_PEAK_FA"
+# bedtools getfasta \
+# -fi "$REF_GENOME" \
+# -bed "$INIT_BED" > "$INIT_PEAK_FA"
 
-#find motifs 
-#findMotifs.pl initial_peaks_seq.fa fasta homer_output/ 
+#find motifs
+HOMER_OUT="${TEMP}/homer_out"
+findMotifs.pl "$INIT_PEAK_FA" fasta "$HOMER_OUT"
 exit 0                                     # Exit normally.
