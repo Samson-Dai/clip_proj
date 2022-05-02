@@ -282,42 +282,100 @@ UNIQUE_1_1="${TEMP}/rep1.r1.fqTrTr.sorted.STAR"
 #Run alignment
 UNIQUE_2_1="${TEMP}/rep2.r1.fqTrTr.sorted.STAR"
 
-STAR \
---runMode alignReads \
---runThreadN 8 \
---genomeDir "$REPEAT_INDEX_DIR" \
---genomeLoad NoSharedMemory \
---alignEndsType EndToEnd \
---outSAMunmapped Within \
---outFilterMultimapNmax 30 \
---outFilterMultimapScoreRange 1 \
---outFileNamePrefix "$UNIQUE_2_1" \
---outSAMtype BAM Unsorted \
---outFilterType BySJout \
---outBAMcompression 10 \
---outReadsUnmapped Fastx \
---outFilterScoreMin 10 \
---outSAMattrRGline ID:foo \
---outSAMattributes All \
---outSAMmode Full \
---outStd Log \
---readFilesIn "$TRIMMED2_2_1" "$TRIMMED2_2_2"
+# STAR \
+# --runMode alignReads \
+# --runThreadN 8 \
+# --genomeDir "$REPEAT_INDEX_DIR" \
+# --genomeLoad NoSharedMemory \
+# --alignEndsType EndToEnd \
+# --outSAMunmapped Within \
+# --outFilterMultimapNmax 30 \
+# --outFilterMultimapScoreRange 1 \
+# --outFileNamePrefix "$UNIQUE_2_1" \
+# --outSAMtype BAM Unsorted \
+# --outFilterType BySJout \
+# --outBAMcompression 10 \
+# --outReadsUnmapped Fastx \
+# --outFilterScoreMin 10 \
+# --outSAMattrRGline ID:foo \
+# --outSAMattributes All \
+# --outSAMmode Full \
+# --outStd Log \
+# --readFilesIn "$TRIMMED2_2_1" "$TRIMMED2_2_2"
 
 
 ##############################
 #Map non-repeats to the genome
 ##############################
-cd $TEMP
-mkdir genome_index
+# cd $TEMP
+# mkdir genome_index
 GENOME_INDEX_DIR="${TEMP}/genome_index"
 
 #Generate index 
+# STAR \
+# --runThreadN 8 \
+# --runMode genomeGenerate \
+# --genomeDir "$GENOME_INDEX_DIR" \
+# --sjdbGTFfile "$GENOME_GTF" \
+# --genomeFastaFiles "$REF_GENOME" \
+# --sjdbOverhang 99
+
+##Rep1
+#Alignment
+UNMAP_1_1="${UNIQUE_1_1}Unmapped.out.mate1"
+UNMAP_1_2="${UNIQUE_1_1}Unmapped.out.mate2"
+ALIGNED_1_1="${TEMP}/rep1.r1.fq.genome-mapped"
+
 STAR \
+--runMode alignReads \
 --runThreadN 8 \
---runMode genomeGenerate \
---genomeDir "$GENOME_INDEX_DIR" \
---sjdbGTFfile "$GENOME_GTF" \
---genomeFastaFiles "$REF_GENOME" \
---sjdbOverhang 99
+--genomeDir genome_STARindex \
+--genomeLoad NoSharedMemory \
+--readFilesIn \
+${UNMAP_1_1} \
+${UNMAP_1_2} \
+--outSAMunmapped Within \
+--outFilterMultimapNmax 1 \
+--outFilterMultimapScoreRange 1 \
+--outFileNamePrefix "$ALIGNED_1_1" \
+--outSAMattributes All \
+--outSAMtype BAM Unsorted \
+--outFilterType BySJout \
+--outReadsUnmapped Fastx \
+--outFilterScoreMin 10 \
+--outSAMattrRGline ID:foo \
+--outStd Log \
+--alignEndsType EndToEnd \
+--outBAMcompression 10 \
+--outSAMmode Full
+
+##Rep1
+#Alignment
+UNMAP_2_1="${UNIQUE_2_1}Unmapped.out.mate1"
+UNMAP_2_2="${UNIQUE_2_1}Unmapped.out.mate2"
+ALIGNED_2_1="${TEMP}/rep2.r1.fq.genome-mapped"
+
+STAR \
+--runMode alignReads \
+--runThreadN 8 \
+--genomeDir genome_STARindex \
+--genomeLoad NoSharedMemory \
+--readFilesIn \
+${UNMAP_2_1} \
+${UNMAP_2_2} \
+--outSAMunmapped Within \
+--outFilterMultimapNmax 1 \
+--outFilterMultimapScoreRange 1 \
+--outFileNamePrefix "$ALIGNED_2_1" \
+--outSAMattributes All \
+--outSAMtype BAM Unsorted \
+--outFilterType BySJout \
+--outReadsUnmapped Fastx \
+--outFilterScoreMin 10 \
+--outSAMattrRGline ID:foo \
+--outStd Log \
+--alignEndsType EndToEnd \
+--outBAMcompression 10 \
+--outSAMmode Full
 
 exit 0                                     # Exit normally.
