@@ -245,19 +245,16 @@ TRIMMED2_2_2="${TEMP}/rep2.r2.fqTrTr.fq"
 cd $TEMP
 mkdir repeat_index
 REPEAT_INDEX_DIR="${TEMP}/repeat_index"
-echo "$REPEAT_INDEX_DIR"
-cd $REPEAT_INDEX_DIR
-ls
 
-# STAR \
-# --runThreadN 8 \
-# --runMode genomeGenerate \
-# --genomeSAindexNbases 9 \
-# --genomeDir "$REPEAT_INDEX_DIR" \
-# --genomeFastaFiles "$REF_GENOME"
+STAR \
+--runThreadN 8 \
+--runMode genomeGenerate \
+--genomeSAindexNbases 9 \
+--genomeDir "$REPEAT_INDEX_DIR" \
+--genomeFastaFiles "$REF_GENOME"
 
 #Rep1
-UNIQUE_1_1="${TEMP}/rep1.r1.fqTrTr.sorted.STAR"
+#UNIQUE_1_1="${TEMP}/rep1.r1.fqTrTr.sorted.STAR"
 #Run alignment
 # STAR \
 # --runMode alignReads \
