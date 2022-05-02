@@ -329,7 +329,7 @@ ALIGNED_1_1="${TEMP}/rep1.r1.fq.genome-mapped"
 STAR \
 --runMode alignReads \
 --runThreadN 8 \
---genomeDir genome_STARindex \
+--genomeDir "$GENOME_INDEX_DIR" \
 --genomeLoad NoSharedMemory \
 --readFilesIn \
 ${UNMAP_1_1} \
@@ -358,7 +358,7 @@ ALIGNED_2_1="${TEMP}/rep2.r1.fq.genome-mapped"
 STAR \
 --runMode alignReads \
 --runThreadN 8 \
---genomeDir genome_STARindex \
+--genomeDir "$GENOME_INDEX_DIR" \
 --genomeLoad NoSharedMemory \
 --readFilesIn \
 ${UNMAP_2_1} \
