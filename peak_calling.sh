@@ -19,6 +19,7 @@ peakachu adaptive \
 -t pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
 
 #convert peakachu peaks to homer peak file
+cp initial_peaks.csv peaks.txt 
 awk -F'\t' -v OFS='\t' 'NR ==1 {print "ID", $0; next} {print (NR-1), $0} ' peaks.txt > peaks_homer_1.txt
 cut -f6,7,8,9 --complement peaks_homer_1.txt > homer_peaks.txt
 

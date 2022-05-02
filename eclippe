@@ -493,5 +493,16 @@ INIT_PEAK_FA="${PEAKACHU_DIR}/initial_peaks_seq.fa"
 
 #find motifs
 HOMER_OUT="${TEMP}/homer_out"
-findMotifs.pl "$INIT_PEAK_FA" fasta "$HOMER_OUT"
+# findMotifs.pl "$INIT_PEAK_FA" fasta "$HOMER_OUT"
+
+
+###############
+#Annotate peaks
+###############
+#annotate peaks
+HOMER_ANNOT="${TEMP}/homer_peaks_annot.txt"
+annotatePeaks.pl "${PEAKACHU_DIR}/homer_peaks.txt" "$REF_GENOME" \
+-gtf "$GENOME_GTF" > "$HOMER_ANNOT"
+
+
 exit 0                                     # Exit normally.

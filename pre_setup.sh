@@ -24,6 +24,11 @@ ln -s $PROJECT/.conda $HOME/.conda
 conda create --name py2 python=2.7
 #install packages
 pip install --user pysam==0.15.4
+#install peakachu
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda create -n peakachu peakachu python=3
 
 #######################################
 #Download data
@@ -47,3 +52,6 @@ gunzip rep2.IP.umi.r2.fq.gz
 #Download genome reference: https://www.encodeproject.org/files/ENCFF159KBI/
 #Download male genome reference: https://www.encodeproject.org/files/GRCh38_no_alt_analysis_set_GCA_000001405.15/
 #Download RepBase file homo_sapiens_repbase_fixed_v2.fasta from Canvas
+#dowload control data
+wget https://www.encodeproject.org/files/ENCFF948OYU/@@download/ENCFF948OYU.bam
+mv ENCFF948OYU.bam ctrl.bam
