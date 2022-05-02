@@ -72,13 +72,26 @@ fi
 #Pipeline starts
 ################
 ################
-TRIMMED_1_1="${TEMP}/rep1.r1.fqTr.fq"
-TRIMMED_1_2="${TEMP}/rep1.r2.fqTr.fq"
+
+########################
+#Define input file paths
+########################
+ECLIP_RAW_1_1="${INPUT}/rep1.r1.fq"
+ECLIP_RAW_1_2="${INPUT}/rep1.r2.fq"
+ECLIP_RAW_2_1="${INPUT}/rep2.r1.fq"
+ECLIP_RAW_2_2="${INPUT}/rep2.r2.fq"
+REF_GENOME="${INPUT}/ref_genome.fasta"
+GENOME_GTF="${INPUT}/genome_info.gtf"
+REPBASE="{INPUT}/homo_sapiens_repbase.fasta"
+
 #############
 #Trim adapter
 #############
 ##Rep1
 #Round 1
+TRIMMED_1_1="${TEMP}/rep1.r1.fqTr.fq"
+TRIMMED_1_2="${TEMP}/rep1.r2.fqTr.fq"
+
 cutadapt \
 -f fastq \
 --match-read-wildcards \
@@ -112,8 +125,8 @@ cutadapt \
 -A GGAAGAGCGTCGTGT \
 -o "$TRIMMED_1_1" \
 -p "$TRIMMED_1_2" \
-rep1.r1.fq \
-rep1.r2.fq
+"$ECLIP_RAW_1_1" \
+"$ECLIP_RAW_1_2"
 
 
 exit 0                                     # Exit normally.
