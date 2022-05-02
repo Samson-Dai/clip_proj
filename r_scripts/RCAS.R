@@ -2,7 +2,10 @@ if (!requireNamespace("BiocManager", quietly=TRUE))
   install.packages("BiocManager")
 BiocManager::install('RCAS')
 
+install.packages("ggplot2")
+
 library(RCAS)
+library(ggplot2)
 
 queryRegions <- importBed(filePath = "initial_peaks.bed", sampleN = 10000)
 
