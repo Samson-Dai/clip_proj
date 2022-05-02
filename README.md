@@ -85,12 +85,19 @@ Options:
   [ -t TEMP_DIR ],           Optional. Absolute path to temporary files directory. Defualt as INPUT_DIR.
   [ -h ],                    Help manuals.
 ```
-Run the sample pipeline via the following command:
+Run the sample pipeline on PSC bridges2 requires a submission script (created by the user) that contains the commands to run the execution. The submission script looks like this:
 ```
-./eclippe -i sample_input_dir
-		  -o sample_output_dir
-		  -t sample_temp_dir
+#!/bin/sh
+#SBATCH -p RM-shared
+#SBATCH -t 5:00:00
+
+./eclippe -i sample_input_di -o sample_output_dir -t sample_temp_dir
 ```
+Then we can submit the submission script to slurm via the following command:
+```
+sbatch sample_submission.sh
+```
+
 The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
 
 <div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/sample_output.png" width="600" height="400"></div>

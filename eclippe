@@ -1,7 +1,3 @@
-#!/bin/sh
-#SBATCH -p RM-shared
-#SBATCH -t 5:00:00
-
 INPUT=""
 TEMP=""
 OUTPUT=""
