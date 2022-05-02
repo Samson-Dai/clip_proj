@@ -14,7 +14,7 @@ The pipeline takes the fastq files from [ENCODE](https://www.encodeproject.org/e
 [RepBase](https://www.girinst.org/repbase/) used to remove repetitive elements, helps control for spurious artifacts from rRNA (&other) repetitive reads. The unique reads are aligned against the reference genome using [STAR](https://github.com/alexdobin/STAR) aligner. It then removes PCR duplicates by barcodecollapsepe.py. The .bam files are merged using [STAR](https://github.com/alexdobin/STAR) before being fed to [PEAKachu](https://github.com/tariks/peakachu) for peak-calling. [Homer](http://homer.ucsd.edu/homer/ngs/peaks.html) will then take the list of peaks (initial_peaks.csv) to annotate the peaks with its Entrez gene ID as well as identify binding motifs. At last, [RCAS](https://academic.oup.com/nar/article/45/10/e91/3038237) takes the annotated list of peaks to perform functional analysis of the transcript and generates a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest.
 
 
-<div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/workflow.png" width="600" height="400"></div>
+<div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/test_results/workflow.png" width="600" height="400"></div>
 <div align="center"><b>Pipeline workflow</b></div>
 
 ## Input files and naming conventions
@@ -107,7 +107,7 @@ sbatch sample_submission.sh
 
 The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
 
-<div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/sample_output.png" width="600" height="400"></div>
+<div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/test_results/RCAS_result_ENSEMBL.png" width="600" height="400"></div>
 <div align="center"><b>Sample output</b></div>
 
 ## Team
