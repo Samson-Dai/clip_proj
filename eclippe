@@ -76,7 +76,8 @@ ECLIP_RAW_2_1="${INPUT}/rep2.r1.fq"
 ECLIP_RAW_2_2="${INPUT}/rep2.r2.fq"
 REF_GENOME="${INPUT}/ref_genome.fasta"
 GENOME_GTF="${INPUT}/genome_info.gtf"
-REPBASE="{INPUT}/homo_sapiens_repbase.fasta"
+REPBASE="${INPUT}/homo_sapiens_repbase.fasta"
+CONTROL="${INPUT}/ctrl.bam"
 
 #############
 #Trim adapter
@@ -435,11 +436,18 @@ RMDUP_SO_2="${ALIGNED_2_1}SO.rmDupSO.bam"
 #Merge replicates
 #################
 MERGED="${TEMP}/pe_clip.fq.merged.bam"
-samtools merge "$MERGED" "$RMDUP_SO_1" "$RMDUP_SO_2"
+# samtools merge "$MERGED" "$RMDUP_SO_1" "$RMDUP_SO_2"
 
 
 ############
 #Call peaks
 ############
+#active environment
+conda deactivate
+conda activate peakachu
+
+#index data 
+samtools index "$CONTROL"
+samtools index "$MERGED"
 
 exit 0                                     # Exit normally.

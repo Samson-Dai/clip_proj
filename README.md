@@ -47,6 +47,12 @@ The reference genome is used as a reference for the non-repeat reads to map to. 
 ```
 The reference genome .gtf file contains information about gene structures and helps to map non-repeat reads to the reference genome. We use [GRCh38 gtf](https://www.encodeproject.org/files/ENCFF159KBI/) reference genome .gtf as a sample .gtf. 
 
+- **Control .bam data** naming as: 
+```
+	ctrl.bam
+```
+ We use [ENCFF948OYU.bam](https://www.encodeproject.org/files/ENCFF948OYU/@@download/ENCFF948OYU.bam) as our control .bam data. 
+
 After downloading and renaming all the required input files, a input directory should be created to hold all the input files. Create a sample input directory via the following command:
 ```
 	mkdir sample_input_dir

@@ -1,17 +1,12 @@
 ############
 #Call peaks
 ############
-#dowload control data
-get https://www.encodeproject.org/files/ENCFF948OYU/@@download/ENCFF948OYU.bam
-mv ENCFF948OYU.bam ctrl.bam
-
 #index data 
-module load samtools 
 samtools index ctrl.bam
 samtools index pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
 
 #active environ
-conda deactivate py2
+conda deactivate
 conda activate peakachu
 
 #run peakachu
