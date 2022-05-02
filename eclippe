@@ -1,4 +1,8 @@
 #!/bin/sh
+#SBATCH -N 2
+#SBATCH -p RM-shared
+#SBATCH -t 5:00:00
+#SBATCH --ntasks-per-node=128
 
 INPUT=""
 TEMP=""
@@ -63,13 +67,53 @@ if [ "$OUTPUT" = "" ]; then                # If $OUTPUT is an empty string,
   OUTPUT=$INPUT                       
 fi
 
+################
+################
+#Pipeline starts
+################
+################
+TRIMMED_1_1="${TEMP}/rep1.r1.fqTr.fq"
+TRIMMED_1_2="${TEMP}/rep1.r2.fqTr.fq"
+#############
+#Trim adapter
+#############
+##Rep1
+#Round 1
+cutadapt \
+-f fastq \
+--match-read-wildcards \
+--times 1 \
+-e 0.1 \
+-O 1 \
+--quality-cutoff 6 \
+-m 18 \
+-a NNNNNAGATCGGAAGAGCACACGTCTGAACTCCAGTCAC \
+-g CTTCCGATCTACAAGTT \
+-g CTTCCGATCTTGGTCCT \
+-A AACTTGTAGATCGGA \
+-A AGGACCAAGATCGGA \
+-A ACTTGTAGATCGGAA \
+-A GGACCAAGATCGGAA \
+-A CTTGTAGATCGGAAG \
+-A GACCAAGATCGGAAG \
+-A TTGTAGATCGGAAGA \
+-A ACCAAGATCGGAAGA \
+-A TGTAGATCGGAAGAG \
+-A CCAAGATCGGAAGAG \
+-A GTAGATCGGAAGAGC \
+-A CAAGATCGGAAGAGC \
+-A TAGATCGGAAGAGCG \
+-A AAGATCGGAAGAGCG \
+-A AGATCGGAAGAGCGT \
+-A GATCGGAAGAGCGTC \
+-A ATCGGAAGAGCGTCG \
+-A TCGGAAGAGCGTCGT \
+-A CGGAAGAGCGTCGTG \
+-A GGAAGAGCGTCGTGT \
+-o "$TRIMMED_1_1" \
+-p "$TRIMMED_1_2" \
+rep1.r1.fq \
+rep1.r2.fq
 
-cd $INPUT
-touch input.txt
-cd $TEMP
-touch temp.txt
-cd $OUTPUT
-touch output.txt
-# add pipine line here
 
 exit 0                                     # Exit normally.

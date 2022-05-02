@@ -65,6 +65,9 @@ After moving all input files into the sample input directory, the tree structure
 ```
 
 ## Environment setup
+There're two bash files that can help to set up the environment and download data in the PSC briges2. 
+The first one is `pre_setup.sh`, which can be run before the first use of the pipeline.  It contains commands to install all the necessary packages as well as its dependencies. This bash script will also configure anaconda and create conda environments for each package to run properly for the pipeline. It will also include a guideline to downloading and renaming datasets such as raw eCLIP reads and RepBase. 
+The second one is `set_up.sh`, which can be run everytime a new bridges2 session starts. It will load all necessary modules and activate anaconda environment.
 
 ## Usage
 Before running the pipeline, please make sure all required input files are renamed following the naming conventions and placed in the INPUT directory.  It's recommended to provide a output directory to hold the output file and a temp direcory to hold all the intermediate files. Create a sample output and temp directories via the following command:
