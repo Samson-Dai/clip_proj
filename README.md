@@ -91,7 +91,7 @@ Options:
   [ -t TEMP_DIR ],           Optional. Absolute path to temporary files directory. Defualt as INPUT_DIR.
   [ -h ],                    Help manuals.
 ```
-Run the sample pipeline on PSC bridges2 requires a submission script (created by the user) that contains the commands to run the execution. The submission script looks like this:
+Run the sample pipeline on PSC bridges2 requires a submission script that contains the commands to run the execution. The submission script looks like this:
 ```
 #!/bin/sh
 #SBATCH -p RM-shared
@@ -99,6 +99,7 @@ Run the sample pipeline on PSC bridges2 requires a submission script (created by
 
 ./eclippe -i sample_input_di -o sample_output_dir -t sample_temp_dir
 ```
+**Note: The user must personalize the submission script before run the pipeline.**
 Then we can submit the submission script to slurm via the following command:
 ```
 sbatch sample_submission.sh

@@ -29,6 +29,8 @@ conda config --add channels defaults
 conda config --add channels bioconda
 conda config --add channels conda-forge
 conda create -n peakachu peakachu python=3
+#install RCAS
+conda install bioconductor-rcas -c bioconda
 
 #######################################
 #Download data

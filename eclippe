@@ -1,3 +1,4 @@
+WORK_DIR=$(pwd)
 INPUT=""
 TEMP=""
 OUTPUT=""
@@ -501,8 +502,15 @@ HOMER_OUT="${TEMP}/homer_out"
 ###############
 #annotate peaks
 HOMER_ANNOT="${TEMP}/homer_peaks_annot.txt"
-annotatePeaks.pl "${PEAKACHU_DIR}/homer_peaks.txt" "$REF_GENOME" \
--gtf "$GENOME_GTF" > "$HOMER_ANNOT"
+# annotatePeaks.pl "${PEAKACHU_DIR}/homer_peaks.txt" "$REF_GENOME" \
+# -gtf "$GENOME_GTF" > "$HOMER_ANNOT"
 
+
+#####################
+#Functional Analysis
+####################
+#install and run RCAS
+cd "$TEMP"
+Rscript "${WORK_DIR}/r_scripts/RCAS.R"
 
 exit 0                                     # Exit normally.
