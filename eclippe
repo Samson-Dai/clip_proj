@@ -426,9 +426,15 @@ RMDUP_2_MET="${ALIGNED_2_1}SO.rmDup.metrics"
 ########################
 ##Rep1
 RMDUP_SO_1="${ALIGNED_1_1}SO.rmDupSO.bam"
-samtools sort -o "$RMDUP_SO_1" "$RMDUP_1_BAM"
+# samtools sort -o "$RMDUP_SO_1" "$RMDUP_1_BAM"
 ##Rep2
 RMDUP_SO_2="${ALIGNED_2_1}SO.rmDupSO.bam"
-samtools sort -o "$RMDUP_SO_2" "$RMDUP_2_BAM"
+# samtools sort -o "$RMDUP_SO_2" "$RMDUP_2_BAM"
+
+#################
+#Merge replicates
+#################
+MERGED="${TEMP}.pe_clip.fq.merged.bam"
+samtools merge "$MERGED" "$RMDUP_SO_1" "$RMDUP_SO_2"
 
 exit 0                                     # Exit normally.
