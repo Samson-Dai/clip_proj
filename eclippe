@@ -443,11 +443,16 @@ MERGED="${TEMP}/pe_clip.fq.merged.bam"
 #Call peaks
 ############
 #active environment
-conda deactivate
-conda activate peakachu
+# conda deactivate
+# conda activate peakachu
 
 #index data 
-samtools index "$CONTROL"
-samtools index "$MERGED"
+# samtools index "$CONTROL"
+# samtools index "$MERGED"
+
+#run peakachu
+peakachu adaptive -M 200 -m 0.0 -f 2.0 -Q 0.05 -c "$CONTROL" -t "$MERGED"
+
+
 
 exit 0                                     # Exit normally.
