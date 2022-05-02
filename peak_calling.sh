@@ -1,16 +1,22 @@
 ############
 #Call peaks
 ############
-#index data 
-samtools index ctrl.bam
-samtools index pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
-
 #active environ
 conda deactivate
 conda activate peakachu
 
+#index data 
+samtools index ctrl.bam
+samtools index pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
+
 #run peakachu
-peakachu adaptive -M 200 -m 0.0 -f 2.0 -Q 0.05 -c ctrl.bam -t pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
+peakachu adaptive \
+-M 200 \
+-m 0.0 \
+-f 2.0 \
+-Q 0.05 \
+-c ctrl.bam \
+-t pe_clip.fq.genomemappedSo.rmDupSo.merged.bam
 
 #convert peakachu peaks to homer peak file
 awk -F'\t' -v OFS='\t' 'NR ==1 {print "ID", $0; next} {print (NR-1), $0} ' peaks.txt > peaks_homer_1.txt

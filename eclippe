@@ -394,11 +394,11 @@ MAPPED_1_SO="${ALIGNED_1_1}Aligned.outSO.bam"
 MAPPED_2="${ALIGNED_2_1}Aligned.out.bam"
 MAPPED_2_SO="${ALIGNED_2_1}Aligned.outSO.bam"
 
-samtools \
-sort \
--n \
--o "$MAPPED_2_SO" \
-"$MAPPED_2"
+# samtools \
+# sort \
+# -n \
+# -o "$MAPPED_2_SO" \
+# "$MAPPED_2"
 
 ######################
 #Remove PCR duplicates
@@ -451,8 +451,22 @@ MERGED="${TEMP}/pe_clip.fq.merged.bam"
 # samtools index "$MERGED"
 
 #run peakachu
-peakachu adaptive -M 200 -m 0.0 -f 2.0 -Q 0.05 -c "$CONTROL" -t "$MERGED"
+cd $TEMP
+mkdir peakachu_dir
+PEAKACHU_DIR="${TEMP}/peakachu_dir"
+peakachu adaptive \
+-M 200 \
+-m 0.0 \
+-f 2.0 \
+-Q 0.05 \
+-c "$CONTROL" \
+-t "$MERGED" \
+-o "$PEAKACHU_DIR"
 
+#convert peakachu peaks to homer peak file
+#awk -F'\t' -v OFS='\t' 'NR ==1 {print "ID", $0; next} {print (NR-1), $0} ' peaks.txt > peaks_homer_1.txt
+#cut -f6,7,8,9 --complement peaks_homer_1.txt > homer_peaks.txt
 
+#mv initial_peaks.csv peaks.txt
 
 exit 0                                     # Exit normally.
