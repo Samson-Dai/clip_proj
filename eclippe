@@ -383,10 +383,41 @@ ALIGNED_2_1="${TEMP}/rep2.r1.fq.genome-mapped"
 MAPPED_1="${ALIGNED_1_1}Aligned.out.bam"
 MAPPED_1_SO="${ALIGNED_1_1}Aligned.outSO.bam"
 
+# samtools \
+# sort \
+# -n \
+# -o "$MAPPED_1_SO" \
+# "$MAPPED_1"
+
+##Rep2
+MAPPED_2="${ALIGNED_2_1}Aligned.out.bam"
+MAPPED_2_SO="${ALIGNED_2_1}Aligned.outSO.bam"
+
 samtools \
 sort \
 -n \
--o "$MAPPED_1_SO" \
-"$MAPPED_1"
+-o "$MAPPED_2_SO" \
+"$MAPPED_2"
+
+######################
+#Remove PCR duplicates
+######################
+##Rep1
+RMDUP_1_BAM="${ALIGNED_1_1}SO.rmDup.bam"
+RMDUP_1_MET="${ALIGNED_1_1}SO.rmDup.metrics"
+
+python barcodecollapsepe.py \
+-o "$RMDUP_1_BAM" \
+-m "$RMDUP_1_MET" \
+-b "$MAPPED_1_SO"
+
+##Rep2
+RMDUP_2_BAM="${ALIGNED_2_1}SO.rmDup.bam"
+RMDUP_2_MET="${ALIGNED_2_1}SO.rmDup.metrics"
+
+python barcodecollapsepe.py \
+-o "$RMDUP_2_BAM" \
+-m "$RMDUP_2_MET" \
+-b "$MAPPED_2_SO"
 
 exit 0                                     # Exit normally.
