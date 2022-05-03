@@ -11,7 +11,6 @@ library(getopt)
 spec <- matrix(
   c("input_bed",  "b", 2, "character",
     "input_gtf", "g", 2, "character",  
-    "output_plot", "o", 2, "character", 
     "help",   "h", 2, "logical"),
   byrow=TRUE, ncol=4)
 opt <- getopt(spec=spec)
@@ -25,8 +24,6 @@ queryRegions <- importBed(filePath = input_bed, sampleN = 10000)
 # get input .gtf file
 gff <- importGtf(filePath = input_gtf)
 
-overlaps <- as.data.table(queryGff(queryRegions = queryRegions, gffData = gff))
-
 biotype_col <- grep('type', colnames(overlaps), value = T)
 df <- overlaps[,length(unique(queryIndex)), by = biotype_col]
 colnames(df) <- c("feature", "count")
@@ -38,7 +35,14 @@ fig = ggplot2::ggplot(df, aes(x = reorder(feature, -percent), y = percent)) +
   labs(x = 'transcript feature', y = paste0('percent overlap (n = ', length(queryRegions), ')')) + 
   theme_bw(base_size = 14) + 
   theme(axis.text.x = element_text(angle = 90))
+ggsave(fig,filename = "RCAS_result.png",width = 10,height = 8)
 
-# output the plot
-ggsave(fig,filename = output_plot,width = 10,height = 8)
+# Functional enrichment analysis
+targetedGenes <- unique(overlaps$gene_id)
+
+res <- RCAS::findEnrichedFunctions(targetGenes = targetedGenes, species = 'hsapiens')
+res <- res[order(res$p_value),]
+resGO <- res[grep('GO:BP', res$source),]
+knitr::kable(subset(resGO[1:10,], select = c('p_value', 'term_name', 'source')))
+capture.output(resGO,file="GO_result.csv")
 
