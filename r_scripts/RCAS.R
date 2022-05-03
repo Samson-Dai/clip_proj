@@ -17,7 +17,6 @@ opt <- getopt(spec=spec)
 
 input_bed = opt$input_bed
 input_gtf = opt$input_gtf
-output_plot = opt$output_plot
 
 # get input .bed file
 queryRegions <- importBed(filePath = input_bed, sampleN = 10000)
