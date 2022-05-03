@@ -124,7 +124,7 @@ The the user can run the RCAS.R on local machine to conduct functional anaysis. 
 │   └── hg38_ENSEMBL.gtf
 ```
 
-The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
+The final output, including a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest and also a .csv file including the enriched GO terms and p values, will be generated in the output directory.
 
 <div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/test_results/RCAS_result_ENSEMBL.png" width="600" height="400"></div>
 <div align="center"><b>Sample output</b></div>
