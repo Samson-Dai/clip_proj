@@ -115,7 +115,7 @@ This part will produced 3 output files:
 -`homer_peaks_annot.txt` The annotated peaks.
 
 ### Part2: Functional analysis using  RCAS(local machine)
-The user can run the RCAS.R on the local machine to conduct functional analysis. The user should place the RCAS.R file, the initial peak file, UCSC annotation .gtf file and ENSEMBL .gtf file into one directory. The directory should have the following structure::
+The user can run the RCAS.R on the local machine to conduct functional analysis. The user should place the peaks .bed file, UCSC annotation .gtf file or ENSEMBL .gtf file into one directory. The directory should have the following structure::
 ```
 ├── local_dir
 │   ├── RCAS.R
@@ -128,7 +128,7 @@ The RCAS.R script can be run locally by using the following command:
 Rscript RCAS.R [Options]
 Options:
   [ -b INPUT_BED ],      Required. Absolute path to input .bed file directory.
-  [ -o INPUT_GTF ],      Required. Absolute path to input .gtf file directory.
+  [ -g INPUT_GTF ],      Required. Absolute path to input .gtf file directory.
 
 ```
 
