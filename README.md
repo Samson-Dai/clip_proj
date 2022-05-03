@@ -115,7 +115,7 @@ This part will produce 3 output files:
 -`homer_peaks_annot.txt` The annotated peaks.
 
 ### Part2: Functional analysis using  RCAS(local machine)
-The user can run the RCAS.R on the local machine to conduct functional analysis. The user should place the peaks .bed file, UCSC annotation .gtf file or ENSEMBL .gtf file into one directory. The directory should have the following structure::
+The user can run the RCAS.R on the local machine to conduct functional analysis. The user should place the peaks .bed file, UCSC annotation .gtf file and ENSEMBL .gtf file into one directory. The directory should have the following structure:
 ```
 ├── local_dir
 │   ├── RCAS.R
@@ -132,7 +132,7 @@ Options:
 
 ```
 
-The final output, including a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest and also a .csv file including the enriched GO terms and p values, will be generated in the output directory.
+The final output, including a .png file of the bar graph representing the properties of the transcripts that bind to the protein of interest and also a .csv file of the enriched GO terms and p values, will be generated in the output directory.
 
 <div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/test_results/RCAS_result_ENSEMBL.png"></div>
 <div align="center"><img src="https://github.com/Samson-Dai/clip_project/blob/main/test_results/GO_result_screenshot.png"></div>
