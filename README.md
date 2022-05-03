@@ -11,7 +11,7 @@ This pipeline aims to use paired-end eCLIP data replicates to identify peak sequ
 
 ## Pipeline
 
-The pipeline takes the fastq files from [ENCODE](https://www.encodeproject.org/eclip/) , the human hg38 reference genome and .gtf from the [Ensembl genome browser](https://useast.ensembl.org/index.html).  It uses [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) to remove adapters from the reads. Then it maps the reads to a human specific version of
+The pipeline takes fastq files from [ENCODE](https://www.encodeproject.org/eclip/) , the human hg38 reference genome and .gtf from the [Ensembl genome browser](https://useast.ensembl.org/index.html).  It uses [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) to remove adapters from the reads. Then it maps the reads to a human specific version of
 [RepBase](https://www.girinst.org/repbase/) used to remove repetitive elements, helps control for spurious artifacts from rRNA (&other) repetitive reads. The unique reads are aligned against the reference genome using [STAR](https://github.com/alexdobin/STAR) aligner. It then removes PCR duplicates by barcodecollapsepe.py. The .bam files are merged using [STAR](https://github.com/alexdobin/STAR) before being fed to [PEAKachu](https://github.com/tariks/peakachu) for peak-calling. [Homer](http://homer.ucsd.edu/homer/ngs/peaks.html) will then take the list of peaks (initial_peaks.csv) to annotate the peaks with its Entrez gene ID as well as identify binding motifs. At last, [RCAS](https://academic.oup.com/nar/article/45/10/e91/3038237) takes the annotated list of peaks to perform functional analysis of the transcript and generates a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest. A .csv file with GO annotations and gene enrichment analysis results are generated as well.
 
 
@@ -54,7 +54,7 @@ The reference genome .gtf file contains information about gene structures and he
 ```
  We use [ENCFF948OYU.bam](https://www.encodeproject.org/files/ENCFF948OYU/@@download/ENCFF948OYU.bam) as our control .bam data. 
 
-After downloading and renaming all the required input files, a input directory should be created to hold all the input files. Create a sample input directory via the following command:
+After downloading and renaming all the required input files, an input directory should be created to hold all the input files. Create a sample input directory via the following command:
 ```
 	mkdir sample_input_dir
 ```
@@ -73,19 +73,19 @@ After moving all input files into the sample input directory, the tree structure
 
 ## Environment setup
 There're two bash files that can help to set up the environment and download data in the PSC bridges2. 
-The first one is `shell_script/pre_setup.sh`, which can be run before the first use of the pipeline.  It contains commands to install all the necessary packages as well as its dependencies. This bash script will also configure anaconda and create conda environments for each package to run properly for the pipeline. It will also include a guideline to downloading and renaming datasets such as raw eCLIP reads and RepBase. 
+The first one is `shell_script/pre_setup.sh`, which can be run before the initial use of the pipeline.  It contains commands to install all the necessary packages as well as its dependencies. This bash script will also configure anaconda and create conda environments for each package to run properly. It also includes a guideline to downloading and renaming datasets such as raw eCLIP reads and RepBase. 
 The second one is `shell_scripts/set_up.sh`, which can be run everytime a new bridges2 session starts. It will load all necessary modules and activate the anaconda environment.
 
 ## Usage
-The pipeline is consisted by 2 parts. 
+The pipeline consists of 2 parts. 
 ### Part1: eClip data processing and peak calling (PSC Bridges2)
-The first part of the pipeline contains all steps for eClip data processing to reak calling and motif identification. This part is supposed to be run on PSC Bridges2.
-Before running the pipeline, please make sure all required input files are renamed following the naming conventions and placed in the INPUT directory.  It's recommended to provide a output directory to hold the output file and a temp direcory to hold all the intermediate files. Create a sample output and temp directories via the following command:
+The first part of the pipeline contains all steps for eClip data processing to peak calling and motif identification. This part is supposed to be run on PSC Bridges2.
+Before running the pipeline, please make sure all required input files are renamed following the naming conventions and placed in the INPUT directory.  It's recommended to provide an output directory to hold the output file and a temp direcory to hold all the intermediate files. Create a sample output and temp directories via the following command:
 ```
 	mkdir sample_output_dir
 	mkdir sample_temp_dir
 ```
-The pipeline can be run by directly calling the execution file, please note that all directory paths are **absolute paths**: 
+The pipeline can be run by directly calling the execution file. Please note that all directory paths are **absolute paths**: 
 ```
 ./eclippe [Options]
 
@@ -108,9 +108,9 @@ Then we can submit the submission script to slurm via the following command:
 ```
 sbatch sample_submission.sh
 ```
-This part will produced 3 output files:
+This part will produce 3 output files:
 
--`pe_clip.fq.merged.bam`  A merged .bam files for 2 replicated to call peak on.
+-`pe_clip.fq.merged.bam`  A merged .bam file for 2 replicated to call peak on.
 -`initial_peaks.bed` A .bed initial peak file for [RCAS](https://academic.oup.com/nar/article/45/10/e91/3038237) to perform functional analysis on.
 -`homer_peaks_annot.txt` The annotated peaks.
 
