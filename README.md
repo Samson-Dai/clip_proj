@@ -62,10 +62,10 @@ After downloading and renaming all the required input files, a input directory s
 After moving all input files into the sample input directory, the tree structure of the sample input directory is as follows:
 ```
 ├── sample_input_dir
-│   ├── req1.r1.fq
-│   ├── req1.r2.fq
-│   ├── req2.r1.fq
-│   ├── req2.r2.fq
+│   ├── rep1.r1.fq
+│   ├── rep1.r2.fq
+│   ├── rep2.r1.fq
+│   ├── rep2.r2.fq
 │   ├── homo_sapiens_repbase.fasta
 │   ├── ref_genome.fasta
 │   └── genome_info.gtf
