@@ -72,9 +72,9 @@ After moving all input files into the sample input directory, the tree structure
 ```
 
 ## Environment setup
-There're two bash files that can help to set up the environment and download data in the PSC briges2. 
-The first one is `pre_setup.sh`, which can be run before the first use of the pipeline.  It contains commands to install all the necessary packages as well as its dependencies. This bash script will also configure anaconda and create conda environments for each package to run properly for the pipeline. It will also include a guideline to downloading and renaming datasets such as raw eCLIP reads and RepBase. 
-The second one is `set_up.sh`, which can be run everytime a new bridges2 session starts. It will load all necessary modules and activate anaconda environment.
+There're two bash files that can help to set up the environment and download data in the PSC bridges2. 
+The first one is `shell_script/pre_setup.sh`, which can be run before the first use of the pipeline.  It contains commands to install all the necessary packages as well as its dependencies. This bash script will also configure anaconda and create conda environments for each package to run properly for the pipeline. It will also include a guideline to downloading and renaming datasets such as raw eCLIP reads and RepBase. 
+The second one is `shell_scripts/set_up.sh`, which can be run everytime a new bridges2 session starts. It will load all necessary modules and activate the anaconda environment.
 
 ## Usage
 The pipeline is consisted by 2 parts. 
@@ -91,11 +91,11 @@ The pipeline can be run by directly calling the execution file, please note that
 
 Options:
   [ -i INPUT_DIR ],          Required. Absolute path to input files directory.
-  [ -o OUTPUT_DIR ],         Optional. Absolute path to output files directory. Defualt as INPUT_DIR.
-  [ -t TEMP_DIR ],           Optional. Absolute path to temporary files directory. Defualt as INPUT_DIR.
+  [ -o OUTPUT_DIR ],         Optional. Absolute path to output files directory. Default as INPUT_DIR.
+  [ -t TEMP_DIR ],           Optional. Absolute path to temporary files directory. Default as INPUT_DIR.
   [ -h ],                    Help manuals.
 ```
-Run the sample pipeline on PSC bridges2 requires a submission script that contains the commands to run the execution. The submission script looks like this:
+Running the sample pipeline on PSC bridges2 requires a submission script that contains the commands to run the execution. The submission script looks like this:
 ```
 #!/bin/sh
 #SBATCH -p RM-shared
@@ -115,13 +115,21 @@ This part will produced 3 output files:
 -`homer_peaks_annot.txt` The annotated peaks.
 
 ### Part2: Functional analysis using  RCAS(local machine)
-The the user can run the RCAS.R on local machine to conduct functional anaysis. The user should place place the RCAS.R file, the initial peak file, UCSC annotation .gtf file and  ENSEMBL .gtf file into one directory. The directory should have the following structure:
+The user can run the RCAS.R on the local machine to conduct functional analysis. The user should place the RCAS.R file, the initial peak file, UCSC annotation .gtf file and ENSEMBL .gtf file into one directory. The directory should have the following structure::
 ```
 ├── local_dir
 │   ├── RCAS.R
 │   ├── initial_peaks.bed
 │   ├── hg38_UCSC.gtf
 │   └── hg38_ENSEMBL.gtf
+```
+The RCAS.R script can be run locally by using the following command:
+```
+Rscript RCAS.R [Options]
+Options:
+  [ -b INPUT_BED ],      Required. Absolute path to input .bed file directory.
+  [ -o INPUT_GTF ],      Required. Absolute path to input .gtf file directory.
+
 ```
 
 The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
