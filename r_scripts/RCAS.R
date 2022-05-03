@@ -44,5 +44,6 @@ res <- RCAS::findEnrichedFunctions(targetGenes = targetedGenes, species = 'hsapi
 res <- res[order(res$p_value),]
 resGO <- res[grep('GO:BP', res$source),]
 knitr::kable(subset(resGO[1:10,], select = c('p_value', 'term_name', 'source')))
-capture.output(resGO,file="GO_result.csv")
+resGO = subset(resGO, select = -parents)
+write.table(resGO, "GO_result.csv",sep = ",")
 
