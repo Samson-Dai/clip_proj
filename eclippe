@@ -474,7 +474,7 @@ cut -f6,7,8,9 --complement peaks_homer_1.txt > homer_peaks.txt
 #############
 #Find motifs 
 #############
-converst peak file to bed file
+#converst peak file to bed file
 awk 'NR>1{
     if ($2 < $3) {
         print $1, $2, $3, "clip_peak_"NR-1,$8,$4;
@@ -486,7 +486,9 @@ awk 'NR>1{
 
 INIT_BED="${PEAKACHU_DIR}/initial_peaks.bed"
 INIT_PEAK_FA="${PEAKACHU_DIR}/initial_peaks_seq.fa"
-extract genomic DNA of peaks
+cp "$INIT_BED" "${OUTPUT}/initial_peaks.bed"
+
+#extract genomic DNA of peaks
 bedtools getfasta \
 -fi "$REF_GENOME" \
 -bed "$INIT_BED" > "$INIT_PEAK_FA"

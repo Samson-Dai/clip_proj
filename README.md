@@ -1,3 +1,4 @@
+
 # Functional analysis of RNA binding sites using eCLIP PE data
 
 [CLIP-seq](https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/hits-clip-clip-seq-ptb-seq.html) is a crosslinking and immunoprecipitation (CLIP) sequencing technique that is used to identify RNA binding sites of RNA binding proteins (RBPs). CLIP-seq is frequently used to understand the protein-RNA interactions as well as its functional downstream effects. [eCLIP](https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/eclip.html) data is a recent and improved version of CLIP-seq that can identify binding sites of RBPs in vivo. Compared to earlier CLIP-seq methods such as iCLIP, eCLIP tends to have higher efficiency and quality of library production as iCLIP methods often result in high duplication rates and low library complexity [(Nostrand, 2016)](https://www.nature.com/articles/nmeth.3810) .
@@ -76,6 +77,9 @@ The first one is `pre_setup.sh`, which can be run before the first use of the pi
 The second one is `set_up.sh`, which can be run everytime a new bridges2 session starts. It will load all necessary modules and activate anaconda environment.
 
 ## Usage
+The pipeline is consisted by 2 parts. 
+### Part1: eClip data processing and peak calling (PSC Bridges2)
+The first part of the pipeline contains all steps for eClip data processing to reak calling and motif identification. This part is supposed to be run on PSC Bridges2.
 Before running the pipeline, please make sure all required input files are renamed following the naming conventions and placed in the INPUT directory.  It's recommended to provide a output directory to hold the output file and a temp direcory to hold all the intermediate files. Create a sample output and temp directories via the following command:
 ```
 	mkdir sample_output_dir
@@ -103,6 +107,21 @@ Run the sample pipeline on PSC bridges2 requires a submission script that contai
 Then we can submit the submission script to slurm via the following command:
 ```
 sbatch sample_submission.sh
+```
+This part will produced 3 output files:
+
+-`pe_clip.fq.merged.bam`  A merged .bam files for 2 replicated to call peak on.
+-`initial_peaks.bed` A .bed initial peak file for [RCAS](https://academic.oup.com/nar/article/45/10/e91/3038237) to perform functional analysis on.
+-`homer_peaks_annot.txt` The annotated peaks.
+
+### Part2: Functional analysis using  RCAS(local machine)
+The the user can run the RCAS.R on local machine to conduct functional anaysis. The user should place place the RCAS.R file, the initial peak file, UCSC annotation .gtf file and  ENSEMBL .gtf file into one directory. The directory should have the following structure:
+```
+├── local_dir
+│   ├── RCAS.R
+│   ├── initial_peaks.bed
+│   ├── hg38_UCSC.gtf
+│   └── hg38_ENSEMBL.gtf
 ```
 
 The final output, which is  a .png file containing the bar graph representing the properties of the transcripts that bind to the protein of interest, will be generated in the output directory.
